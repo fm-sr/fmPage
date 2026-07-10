@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fmPage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky-deep: #0f1b2e;
+    --sky-panel: #16243d;
+    --sky-line: #2a3a56;
+    --sun-gold: #e8a33d;
+    --sun-soft: #f2c375;
+    --text-main: #ede6d6;
+    --text-muted: #8b95a8;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--sky-deep);
+    color: var(--text-main);
+    font-family: 'Spectral', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 6vh 5vw 8vh;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  header {
+    text-align: left;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sun-gold);
+    margin: 0 0 0.6rem;
+  }
+
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 2.8rem);
+    font-weight: 600;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Sun-arc divider — the signature element.
+     A simple ephemeris-style arc tracing a day's sun path. */
+  .arc-wrap {
+    margin: 2.2rem 0 2.6rem;
+  }
+
+  .arc-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  nav {
+    border-top: 1px solid var(--sky-line);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0.1rem;
+    border-bottom: 1px solid var(--sky-line);
+    text-decoration: none;
+    color: var(--text-main);
+    transition: padding-left 0.18s ease, color 0.18s ease;
+  }
+
+  .menu-item:hover,
+  .menu-item:focus-visible {
+    padding-left: 0.6rem;
+    color: var(--sun-soft);
+    outline: none;
+  }
+
+  .menu-item:focus-visible {
+    box-shadow: inset 3px 0 0 var(--sun-gold);
+  }
+
+  .item-name {
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+
+  .item-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .menu-item:hover .item-tag,
+  .menu-item:focus-visible .item-tag {
+    color: var(--sun-gold);
+  }
+
+  footer {
+    margin-top: 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-item { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">fm-sr / fmPage</p>
+      <h1>Field Notes</h1>
+      <p class="subtitle">a running set of small tools, tracked as they're built</p>
+    </header>
+
+    <div class="arc-wrap" aria-hidden="true">
+      <svg viewBox="0 0 620 90" preserveAspectRatio="none">
+        <path d="M 10 80 Q 310 -10 610 80" fill="none" stroke="#2a3a56" stroke-width="1"/>
+        <path d="M 10 80 Q 310 -10 610 80" fill="none" stroke="url(#arcGradient)" stroke-width="1.5" stroke-dasharray="1 6" stroke-linecap="round"/>
+        <circle cx="310" cy="8" r="5" fill="#e8a33d"/>
+        <defs>
+          <linearGradient id="arcGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e8a33d" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#e8a33d" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#e8a33d" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!--
+      ============================================
+      TO ADD A NEW PAGE:
+      1. Put the new .html file in this same folder
+         (or a subfolder — just adjust the href).
+      2. Copy one <a class="menu-item"> block below,
+         paste it, and edit the href / name / tag.
+      That's it — no other setup needed.
+      ============================================
+    -->
+    <nav>
+      <a class="menu-item" href="Sun Tracker.html">
+        <span class="item-name">Sun Tracker</span>
+        <span class="item-tag">daily position &amp; arc</span>
+      </a>
+
+      <!-- Example of the next entry — duplicate this block for each new page:
+      <a class="menu-item" href="New Page.html">
+        <span class="item-name">New Page</span>
+        <span class="item-tag">short description</span>
+      </a>
+      -->
+    </nav>
+
+    <footer>
+      updated as new tools go up
+    </footer>
+  </div>
+</body>
+</html>
