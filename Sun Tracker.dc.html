@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#08070a">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="95" fill="#17140f" stroke="#d4af37" stroke-width="2"/>
+    <circle cx="100" cy="100" r="55" fill="#0a0908" stroke="#d4af37" stroke-width="2"/>
+    <circle cx="100" cy="30" r="6" fill="#f4c95d"/>
+    <line x1="100" y1="100" x2="100" y2="30" stroke="#d4af37" stroke-width="1.5"/>
+    <text x="100" y="106" fill="#d4af37" font-family="monospace" font-size="14" text-anchor="middle">N</text>
+  </svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="ext-resource-dependency" content="./images/sun.png">
+  <meta name="ext-resource-dependency" content="./images/moon.png">
+  <meta name="ext-resource-dependency" content="./images/mercury.png">
+  <meta name="ext-resource-dependency" content="./images/venus.png">
+  <meta name="ext-resource-dependency" content="./images/mars.png">
+  <meta name="ext-resource-dependency" content="./images/jupiter.png">
+  <meta name="ext-resource-dependency" content="./images/saturn.png">
+  <meta name="ext-resource-dependency" content="./images/polaris.png">
+  <style>
+    body { margin: 0; background: #08070a; }
+    @keyframes sunPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+    @keyframes sweepFade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; width: 100%; background: radial-gradient(ellipse at 50% 30%, #16130f 0%, #08070a 60%); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; font-family: 'IBM Plex Mono', monospace; padding: 32px 24px; box-sizing: border-box; position: relative; overflow-y: auto;">
+
+  <div style="position: relative; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #2b2620 0%, #17140f 42%, #0c0a08 100%); box-shadow: 0 0 0 1px rgba(212,175,55,0.18), 0 40px 80px rgba(0,0,0,0.65), inset 0 2px 6px rgba(255,255,255,0.05), inset 0 -10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;">
+
+    <div style="position: absolute; inset: 14px; border-radius: 50%; background: #0a0908; box-shadow: inset 0 0 0 1px rgba(212,175,55,0.35), inset 0 10px 40px rgba(0,0,0,0.7);">
+
+      <svg viewBox="0 0 480 480" style="width: 100%; height: 100%; display: block;">
+        <circle cx="240" cy="240" r="221" fill="none" stroke="rgba(212,175,55,0.5)" stroke-width="1"></circle>
+        <circle cx="240" cy="240" r="200" fill="none" stroke="rgba(212,175,55,0.28)" stroke-width="1"></circle>
+
+        <sc-for list="{{ minorTicks }}" as="t" hint-placeholder-count="24">
+          <line x1="{{ t.x1 }}" y1="{{ t.y1 }}" x2="{{ t.x2 }}" y2="{{ t.y2 }}" stroke="rgba(212,175,55,0.35)" stroke-width="1"></line>
+        </sc-for>
+        <sc-for list="{{ majorTicks }}" as="t" hint-placeholder-count="12">
+          <line x1="{{ t.x1 }}" y1="{{ t.y1 }}" x2="{{ t.x2 }}" y2="{{ t.y2 }}" stroke="rgba(212,175,55,0.7)" stroke-width="1.5"></line>
+        </sc-for>
+        <circle cx="240" cy="240" r="166.7" fill="none" stroke="rgba(212,175,55,0.18)" stroke-width="1" stroke-dasharray="2 6"></circle>
+        <circle cx="240" cy="240" r="141.3" fill="none" stroke="rgba(212,175,55,0.18)" stroke-width="1" stroke-dasharray="2 6"></circle>
+        <circle cx="240" cy="240" r="108" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="1" stroke-dasharray="2 6"></circle>
+
+        <sc-if value="{{ hasDayPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ dayPathPoints }}" fill="none" stroke="rgba(212,175,55,0.55)" stroke-width="1.75" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+
+        <defs>
+          <radialGradient id="earthOcean" cx="34%" cy="28%" r="85%">
+            <stop offset="0%" stop-color="#6fa8d8"></stop>
+            <stop offset="55%" stop-color="#2a63a3"></stop>
+            <stop offset="100%" stop-color="#0a2647"></stop>
+          </radialGradient>
+        </defs>
+
+        <circle cx="240" cy="240" r="8" fill="#0a2647" opacity="0.3"></circle>
+        <circle cx="240" cy="240" r="8" fill="url(#earthOcean)" stroke="rgba(212,175,55,0.9)" stroke-width="1.25"></circle>
+
+        <sc-if value="{{ hasMoonPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ moonPathPoints }}" fill="none" stroke="rgba(201,214,227,0.4)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+        <sc-if value="{{ hasMarsPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ marsPathPoints }}" fill="none" stroke="rgba(224,122,63,0.4)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+        <sc-if value="{{ hasSaturnPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ saturnPathPoints }}" fill="none" stroke="rgba(224,201,140,0.35)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+        <sc-if value="{{ hasJupiterPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ jupiterPathPoints }}" fill="none" stroke="rgba(201,155,110,0.4)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+        <sc-if value="{{ hasMercuryPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ mercuryPathPoints }}" fill="none" stroke="rgba(154,154,148,0.4)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+        <sc-if value="{{ hasVenusPath }}" hint-placeholder-val="{{ false }}">
+          <polyline points="{{ venusPathPoints }}" fill="none" stroke="rgba(245,237,220,0.4)" stroke-width="1.25" stroke-dasharray="3 4" style="animation: sweepFade 900ms ease-out;"></polyline>
+        </sc-if>
+
+        <line x1="240" y1="240" x2="{{ sunPointerX }}" y2="{{ sunPointerY }}" stroke="{{ sunLineColor }}" stroke-width="1.25" stroke-dasharray="{{ sunLineDash }}"></line>
+        <circle cx="{{ sunPointerX }}" cy="{{ sunPointerY }}" r="{{ sunHaloR }}" fill="{{ sunMarkerColor }}" opacity="0.28"></circle>
+        <circle cx="{{ sunPointerX }}" cy="{{ sunPointerY }}" r="{{ sunDotR }}" fill="{{ sunMarkerColor }}" style="{{ sunMarkerStyle }}"></circle>
+        <circle cx="{{ sunPointerX }}" cy="{{ sunPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverSun }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickSun }}"></circle>
+
+        <sc-if value="{{ polarisVisible }}" hint-placeholder-val="{{ false }}">
+          <g transform="translate({{ polarisX }}, {{ polarisY }}) scale({{ polarisScale }})">
+            <path d="M0,-7 L1.6,-1.6 L7,0 L1.6,1.6 L0,7 L-1.6,1.6 L-7,0 L-1.6,-1.6 Z" fill="#eaf2fb" opacity="0.9" style="animation: sunPulse 4s ease-in-out infinite;"></path>
+          </g>
+          <circle cx="{{ polarisX }}" cy="{{ polarisY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverPolaris }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickPolaris }}"></circle>
+        </sc-if>
+
+        <line x1="240" y1="240" x2="{{ moonPointerX }}" y2="{{ moonPointerY }}" stroke="{{ moonLineColor }}" stroke-width="1" stroke-dasharray="{{ moonLineDash }}"></line>
+        <circle cx="{{ moonPointerX }}" cy="{{ moonPointerY }}" r="{{ moonDotR }}" fill="#c9d6e3" opacity="{{ moonMarkerOpacity }}"></circle>
+        <circle cx="{{ moonShadowCx }}" cy="{{ moonPointerY }}" r="{{ moonDotR }}" fill="#0a0908" opacity="{{ moonShadowOpacity }}" clip-path="url(#moonClip)"></circle>
+        <clipPath id="moonClip">
+          <circle cx="{{ moonPointerX }}" cy="{{ moonPointerY }}" r="{{ moonDotR }}"></circle>
+        </clipPath>
+        <circle cx="{{ moonPointerX }}" cy="{{ moonPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverMoon }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickMoon }}"></circle>
+
+        <line x1="240" y1="240" x2="{{ marsPointerX }}" y2="{{ marsPointerY }}" stroke="{{ marsLineColor }}" stroke-width="1" stroke-dasharray="{{ marsLineDash }}"></line>
+        <circle cx="{{ marsPointerX }}" cy="{{ marsPointerY }}" r="{{ marsHaloR }}" fill="#e07a3f" opacity="0.22"></circle>
+        <circle cx="{{ marsPointerX }}" cy="{{ marsPointerY }}" r="{{ marsDotR }}" fill="#e07a3f" opacity="{{ marsMarkerOpacity }}"></circle>
+        <circle cx="{{ marsPointerX }}" cy="{{ marsPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverMars }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickMars }}"></circle>
+
+        <line x1="240" y1="240" x2="{{ saturnPointerX }}" y2="{{ saturnPointerY }}" stroke="{{ saturnLineColor }}" stroke-width="1" stroke-dasharray="{{ saturnLineDash }}"></line>
+        <circle cx="{{ saturnPointerX }}" cy="{{ saturnPointerY }}" r="{{ saturnHaloR }}" fill="#e0c98c" opacity="0.2"></circle>
+        <ellipse cx="{{ saturnPointerX }}" cy="{{ saturnPointerY }}" rx="{{ saturnRingRx }}" ry="{{ saturnRingRy }}" fill="none" stroke="#e0c98c" stroke-width="1" opacity="{{ saturnMarkerOpacity }}"></ellipse>
+        <circle cx="{{ saturnPointerX }}" cy="{{ saturnPointerY }}" r="{{ saturnDotR }}" fill="#e0c98c" opacity="{{ saturnMarkerOpacity }}"></circle>
+        <circle cx="{{ saturnPointerX }}" cy="{{ saturnPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverSaturn }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickSaturn }}"></circle>
+
+        <line x1="240" y1="240" x2="{{ jupiterPointerX }}" y2="{{ jupiterPointerY }}" stroke="{{ jupiterLineColor }}" stroke-width="1" stroke-dasharray="{{ jupiterLineDash }}"></line>
+        <circle cx="{{ jupiterPointerX }}" cy="{{ jupiterPointerY }}" r="{{ jupiterHaloR }}" fill="#c99b6e" opacity="0.2"></circle>
+        <circle cx="{{ jupiterPointerX }}" cy="{{ jupiterPointerY }}" r="{{ jupiterDotR }}" fill="#d9b98c" opacity="{{ jupiterMarkerOpacity }}"></circle>
+        <line x1="{{ jupiterBandX1 }}" y1="{{ jupiterPointerY }}" x2="{{ jupiterBandX2 }}" y2="{{ jupiterPointerY }}" stroke="#8a5a34" stroke-width="1" opacity="{{ jupiterMarkerOpacity }}"></line>
+        <circle cx="{{ jupiterPointerX }}" cy="{{ jupiterPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverJupiter }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickJupiter }}"></circle>
+
+        <line x1="240" y1="240" x2="{{ mercuryPointerX }}" y2="{{ mercuryPointerY }}" stroke="{{ mercuryLineColor }}" stroke-width="1" stroke-dasharray="{{ mercuryLineDash }}"></line>
+        <circle cx="{{ mercuryPointerX }}" cy="{{ mercuryPointerY }}" r="{{ mercuryHaloR }}" fill="#9a9a94" opacity="0.18"></circle>
+        <circle cx="{{ mercuryPointerX }}" cy="{{ mercuryPointerY }}" r="{{ mercuryDotR }}" fill="#b8b8b0" opacity="{{ mercuryMarkerOpacity }}"></circle>
+        <circle cx="{{ mercuryPointerX }}" cy="{{ mercuryPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverMercury }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickMercury }}"></circle>
+
+        <line x1="240" y1="240" x2="{{ venusPointerX }}" y2="{{ venusPointerY }}" stroke="{{ venusLineColor }}" stroke-width="1" stroke-dasharray="{{ venusLineDash }}"></line>
+        <circle cx="{{ venusPointerX }}" cy="{{ venusPointerY }}" r="{{ venusHaloR }}" fill="#f5edcc" opacity="0.28"></circle>
+        <circle cx="{{ venusPointerX }}" cy="{{ venusPointerY }}" r="{{ venusDotR }}" fill="#f7f1de" opacity="{{ venusMarkerOpacity }}"></circle>
+        <circle cx="{{ venusPointerX }}" cy="{{ venusPointerY }}" r="13" fill="transparent" style="cursor: pointer;" onMouseEnter="{{ onHoverVenus }}" onMouseLeave="{{ onHoverEnd }}" onClick="{{ onClickVenus }}"></circle>
+      </svg>
+
+      <div style="position: absolute; inset: 0; pointer-events: none;">
+        <div style="position: absolute; left: 50%; top: 1.25%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.9); font-size: 13px; font-weight: 600; letter-spacing: 1px;">N</div>
+        <div style="position: absolute; left: 84.47%; top: 15.53%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.45); font-size: 10px; font-weight: 600; letter-spacing: 1px;">NE</div>
+        <div style="position: absolute; left: 98.75%; top: 50%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.9); font-size: 13px; font-weight: 600; letter-spacing: 1px;">E</div>
+        <div style="position: absolute; left: 84.47%; top: 84.47%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.45); font-size: 10px; font-weight: 600; letter-spacing: 1px;">SE</div>
+        <div style="position: absolute; left: 50%; top: 98.75%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.9); font-size: 13px; font-weight: 600; letter-spacing: 1px;">S</div>
+        <div style="position: absolute; left: 15.53%; top: 84.47%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.45); font-size: 10px; font-weight: 600; letter-spacing: 1px;">SW</div>
+        <div style="position: absolute; left: 1.25%; top: 50%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.9); font-size: 13px; font-weight: 600; letter-spacing: 1px;">W</div>
+        <div style="position: absolute; left: 15.53%; top: 15.53%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.45); font-size: 10px; font-weight: 600; letter-spacing: 1px;">NW</div>
+
+        <div style="position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); color: #d4af37; font-size: 30px; font-weight: 600; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);">{{ clockText }}</div>
+        <div style="position: absolute; left: 50%; top: 60%; transform: translate(-50%, -50%); color: rgba(212,175,55,0.9); font-size: 13px; letter-spacing: 1.5px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.7);">AZ {{ azText }}&#176;&#160;&#160;EL {{ elText }}&#176;</div>
+        <div style="position: absolute; left: 50%; top: 65%; transform: translate(-50%, -50%); color: rgba(230,220,190,0.65); font-size: 10.5px; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9);">{{ dayStatusText }}</div>
+        <div style="position: absolute; left: 50%; top: 70%; transform: translate(-50%, -50%); color: rgba(201,214,227,0.85); font-size: 10.5px; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9);">MOON {{ moonPhaseName }} &#183; {{ moonIllumText }}%</div>
+        <div style="position: absolute; left: {{ sunLabelLeft }}%; top: {{ sunLabelTop }}%; transform: translate(0, -50%); color: rgba(255,226,122,0.85); font-size: 9px; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9);">SUN</div>
+        <div style="position: absolute; left: {{ moonLabelLeft }}%; top: {{ moonLabelTop }}%; transform: translate(0, -50%); color: rgba(201,214,227,0.85); font-size: 9px; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.9);">MOON</div>
+        <sc-if value="{{ hoverBody }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: {{ hoverLabelLeft }}%; top: {{ hoverLabelTop }}%; transform: translate(-50%, -100%); background: #14110c; border: 1px solid rgba(212,175,55,0.6); color: #d4af37; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; padding: 5px 10px; border-radius: 3px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center;">
+            <div>{{ hoverBody }}</div>
+            <div style="font-size: 9px; font-weight: 400; letter-spacing: 0.5px; color: rgba(212,175,55,0.7); margin-top: 2px;">{{ hoverDistText }}</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ polarisVisible }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: {{ polarisLabelLeft }}%; top: {{ polarisLabelTop }}%; transform: translate(-50%, -50%); color: rgba(234,242,251,0.75); font-size: 9px; letter-spacing: 1px; white-space: nowrap;">POLARIS</div>
+        </sc-if>
+      </div>
+
+    </div>
+
+    <button onClick="{{ openSettings }}" style="position: absolute; top: 6px; right: 30px; width: 34px; height: 34px; border-radius: 50%; background: #14110c; border: 1px solid rgba(212,175,55,0.4); color: rgba(212,175,55,0.85); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 2px rgba(255,255,255,0.06), 0 2px 6px rgba(0,0,0,0.5);" style-hover="border-color: rgba(212,175,55,0.8); color: #d4af37;" aria-label="Settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="3.2"></circle>
+        <path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.7 7.7 0 0 0-1.7-1l-.4-2.5H9l-.4 2.5a7.7 7.7 0 0 0-1.7 1l-2.3-.9-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9c.5.4 1.1.75 1.7 1l.4 2.5h5l.4-2.5c.6-.25 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.5Z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div style="margin-top: 28px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(212,175,55,0.65);">
+    <span>SUNRISE {{ sunriseText }}</span>
+    <span>SUNSET {{ sunsetText }}</span>
+    <span>{{ locLabelText }}</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(201,214,227,0.25); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(201,214,227,0.6);">
+    <span>MOONRISE {{ moonriseText }}</span>
+    <span>MOONSET {{ moonsetText }}</span>
+    <span>{{ moonPhaseName }}</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(224,122,63,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(224,122,63,0.75);">
+    <span>MARS RISE {{ marsriseText }}</span>
+    <span>MARS SET {{ marssetText }}</span>
+    <span>&#9679; MARS</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(224,201,140,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(224,201,140,0.75);">
+    <span>SATURN RISE {{ saturnriseText }}</span>
+    <span>SATURN SET {{ saturnsetText }}</span>
+    <span>&#9799; SATURN</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(201,155,110,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(201,155,110,0.8);">
+    <span>JUPITER RISE {{ jupiterriseText }}</span>
+    <span>JUPITER SET {{ jupitersetText }}</span>
+    <span>&#9679; JUPITER</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(154,154,148,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(184,184,176,0.8);">
+    <span>MERCURY RISE {{ mercuryriseText }}</span>
+    <span>MERCURY SET {{ mercurysetText }}</span>
+    <span>&#9679; MERCURY</span>
+  </div>
+
+  <div style="margin-top: 10px; width: 480px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(245,237,220,0.3); border-radius: 6px; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-size: 11.5px; letter-spacing: 1px; color: rgba(247,241,222,0.85);">
+    <span>VENUS RISE {{ venusriseText }}</span>
+    <span>VENUS SET {{ venussetText }}</span>
+    <span>&#9679; VENUS</span>
+  </div>
+
+  <sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10;">
+      <div style="width: 360px; max-width: 90vw; background: #0e0c09; border: 1px solid rgba(212,175,55,0.4); border-radius: 10px; padding: 28px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); font-family: 'IBM Plex Mono', monospace; color: #d4af37;">
+        <div style="font-size: 14px; letter-spacing: 2px; font-weight: 600; margin-bottom: 20px; text-transform: uppercase;">Location Setup</div>
+
+        <label style="display: block; font-size: 11px; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">LABEL</label>
+        <input value="{{ draftLabel }}" onChange="{{ onLabelChange }}" style="width: 100%; box-sizing: border-box; background: #16130f; border: 1px solid rgba(212,175,55,0.35); color: #d4af37; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; border-radius: 4px; margin-bottom: 16px;" />
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 11px; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">LATITUDE</label>
+            <input value="{{ draftLat }}" onChange="{{ onLatChange }}" style="width: 100%; box-sizing: border-box; background: #16130f; border: 1px solid rgba(212,175,55,0.35); color: #d4af37; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; border-radius: 4px;" />
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 11px; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">LONGITUDE</label>
+            <input value="{{ draftLon }}" onChange="{{ onLonChange }}" style="width: 100%; box-sizing: border-box; background: #16130f; border: 1px solid rgba(212,175,55,0.35); color: #d4af37; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; border-radius: 4px;" />
+          </div>
+        </div>
+
+        <label style="display: block; font-size: 11px; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">UTC OFFSET (HOURS)</label>
+        <input value="{{ draftTz }}" onChange="{{ onTzChange }}" style="width: 100%; box-sizing: border-box; background: #16130f; border: 1px solid rgba(212,175,55,0.35); color: #d4af37; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; border-radius: 4px; margin-bottom: 18px;" />
+
+        <button onClick="{{ useMyLocation }}" style="width: 100%; background: none; border: 1px solid rgba(212,175,55,0.4); color: rgba(212,175,55,0.85); padding: 9px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 1px; border-radius: 4px; cursor: pointer; margin-bottom: 20px;" style-hover="border-color: #d4af37; color: #d4af37;">USE MY LOCATION</button>
+
+        <div style="font-size: 10.5px; opacity: 0.55; min-height: 14px; margin-top: -12px; margin-bottom: 14px;">{{ geoStatus }}</div>
+
+        <div style="display: flex; gap: 10px;">
+          <button onClick="{{ closeSettings }}" style="flex: 1; background: none; border: 1px solid rgba(212,175,55,0.25); color: rgba(212,175,55,0.6); padding: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1px; border-radius: 4px; cursor: pointer;">CANCEL</button>
+          <button onClick="{{ saveSettings }}" style="flex: 1; background: #d4af37; border: 1px solid #d4af37; color: #0a0908; padding: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 1px; border-radius: 4px; cursor: pointer;">SAVE</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ detailBody }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 20; padding: 20px; box-sizing: border-box;" onClick="{{ closeDetail }}">
+      <div style="width: 400px; max-width: 100%; background: #0e0c09; border: 1px solid rgba(212,175,55,0.4); border-radius: 10px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.65); font-family: 'IBM Plex Mono', monospace;" onClick="{{ stopClickPropagation }}">
+        <div style="width: 100%; height: 220px; background: #000 center / cover no-repeat; background-image: url({{ detailInfo.image }});"></div>
+        <div style="padding: 22px 24px 26px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px;">
+            <div style="font-size: 18px; font-weight: 600; letter-spacing: 2px; color: #d4af37;">{{ detailBody }}</div>
+            <button onClick="{{ closeDetail }}" style="background: none; border: none; color: rgba(212,175,55,0.6); font-size: 18px; cursor: pointer; line-height: 1; padding: 4px;" aria-label="Close">&#10005;</button>
+          </div>
+          <div style="font-size: 11.5px; letter-spacing: 1px; color: rgba(212,175,55,0.65); margin-bottom: 4px;">{{ detailInfo.tagline }}</div>
+          <div style="font-size: 11px; letter-spacing: 0.5px; color: rgba(201,214,227,0.6); margin-bottom: 16px;">{{ detailDist }}</div>
+          <sc-for list="{{ detailInfo.facts }}" as="fact" hint-placeholder-count="4">
+            <div style="display: flex; gap: 8px; font-size: 12px; color: rgba(230,220,190,0.85); line-height: 1.5; margin-bottom: 6px;">
+              <span style="color: rgba(212,175,55,0.6);">&#183;</span>
+              <span>{{ fact }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CX = 240, CY = 240, RIN = 100, RING_OUT = 200;
+
+function toRad(d) { return d * Math.PI / 180; }
+function toDeg(r) { return r * 180 / Math.PI; }
+function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+// scales a marker's visual size by true distance — closer bodies render larger, farther ones smaller
+function distScale(auDist) {
+  const au = Math.max(auDist, 0.002);
+  return clamp(0.85 / Math.pow(au, 0.3), 0.45, 2.4);
+}
+
+// --- Moon position (low-precision astronomical formulas) ---
+const MOON_E = toRad(23.4397); // obliquity of the ecliptic
+const DAY_MS = 86400000;
+const J1970 = 2440588, J2000 = 2451545;
+
+function toDays(ms) { return (ms / DAY_MS - 0.5 + J1970) - J2000; }
+function rightAscension(l, b) {
+  return Math.atan2(Math.sin(l) * Math.cos(MOON_E) - Math.tan(b) * Math.sin(MOON_E), Math.cos(l));
+}
+function declinationOf(l, b) {
+  return Math.asin(Math.sin(b) * Math.cos(MOON_E) + Math.cos(b) * Math.sin(MOON_E) * Math.sin(l));
+}
+function siderealTime(d, lw) {
+  return toRad(280.16 + 360.9856235 * d) - lw;
+}
+function moonCoords(d) {
+  const L = toRad(218.316 + 13.176396 * d);
+  const M = toRad(134.963 + 13.064993 * d);
+  const F = toRad(93.272 + 13.229350 * d);
+  const l = L + toRad(6.289) * Math.sin(M);
+  const b = toRad(5.128) * Math.sin(F);
+  const dist = 385001 - 20905 * Math.cos(M);
+  return { ra: rightAscension(l, b), dec: declinationOf(l, b), l, M, dist };
+}
+function getMoonPosition(nowMs, lat, lon) {
+  const lw = toRad(-lon);
+  const phi = toRad(lat);
+  const d = toDays(nowMs);
+  const c = moonCoords(d);
+  const H = siderealTime(d, lw) - c.ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(c.dec) + Math.cos(phi) * Math.cos(c.dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(c.dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceKm: c.dist };
+}
+// --- Mars position (low-precision Keplerian elements, Schlyter method) ---
+function keplerSolve(Mdeg, e) {
+  const Mr = toRad(((Mdeg % 360) + 360) % 360);
+  let E = Mr;
+  for (let k = 0; k < 5; k++) {
+    E = E - (E - e * Math.sin(E) - Mr) / (1 - e * Math.cos(E));
+  }
+  return E;
+}
+function helioXYZ(Ndeg, ideg, wdeg, a, e, Mdeg) {
+  const E = keplerSolve(Mdeg, e);
+  const xv = a * (Math.cos(E) - e);
+  const yv = a * (Math.sqrt(1 - e * e) * Math.sin(E));
+  const v = Math.atan2(yv, xv);
+  const r = Math.sqrt(xv * xv + yv * yv);
+  const N = toRad(Ndeg), i = toRad(ideg), w = toRad(wdeg);
+  const vw = v + w;
+  return {
+    x: r * (Math.cos(N) * Math.cos(vw) - Math.sin(N) * Math.sin(vw) * Math.cos(i)),
+    y: r * (Math.sin(N) * Math.cos(vw) + Math.cos(N) * Math.sin(vw) * Math.cos(i)),
+    z: r * (Math.sin(vw) * Math.sin(i))
+  };
+}
+function getMarsPosition(nowMs, lat, lon) {
+  const d = toDays(nowMs) + 1.5;
+  const wSun = 282.9404 + 4.70935e-5 * d;
+  const eSun = 0.016709 - 1.151e-9 * d;
+  const MSun = 356.0470 + 0.9856002585 * d;
+  const sunXYZ = helioXYZ(0, 0, wSun, 1, eSun, MSun);
+  const earth = { x: -sunXYZ.x, y: -sunXYZ.y, z: -sunXYZ.z };
+
+  const NMars = 49.5574 + 2.11081e-5 * d;
+  const iMars = 1.8497 - 1.78e-8 * d;
+  const wMars = 286.5016 + 2.92961e-5 * d;
+  const aMars = 1.523688;
+  const eMars = 0.093405 + 2.516e-9 * d;
+  const MMars = 18.6021 + 0.5240207766 * d;
+  const mars = helioXYZ(NMars, iMars, wMars, aMars, eMars, MMars);
+
+  const xg = mars.x - earth.x, yg = mars.y - earth.y, zg = mars.z - earth.z;
+  const distanceAU = Math.sqrt(xg * xg + yg * yg + zg * zg);
+  const ecl = toRad(23.4393 - 3.563e-7 * d);
+  const xe = xg;
+  const ye = yg * Math.cos(ecl) - zg * Math.sin(ecl);
+  const ze = yg * Math.sin(ecl) + zg * Math.cos(ecl);
+  const ra = Math.atan2(ye, xe);
+  const dec = Math.atan2(ze, Math.sqrt(xe * xe + ye * ye));
+
+  const lw = toRad(-lon), phi = toRad(lat);
+  const H = siderealTime(toDays(nowMs), lw) - ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceAU };
+}
+
+function getMercuryPosition(nowMs, lat, lon) {
+  const d = toDays(nowMs) + 1.5;
+  const wSun = 282.9404 + 4.70935e-5 * d;
+  const eSun = 0.016709 - 1.151e-9 * d;
+  const MSun = 356.0470 + 0.9856002585 * d;
+  const sunXYZ = helioXYZ(0, 0, wSun, 1, eSun, MSun);
+  const earth = { x: -sunXYZ.x, y: -sunXYZ.y, z: -sunXYZ.z };
+
+  const N = 48.3313 + 3.24587e-5 * d;
+  const i = 7.0047 + 5.00e-8 * d;
+  const w = 29.1241 + 1.01444e-5 * d;
+  const a = 0.387098;
+  const e = 0.205635 + 5.59e-10 * d;
+  const M = 168.6562 + 4.0923344368 * d;
+  const merc = helioXYZ(N, i, w, a, e, M);
+
+  const xg = merc.x - earth.x, yg = merc.y - earth.y, zg = merc.z - earth.z;
+  const distanceAU = Math.sqrt(xg * xg + yg * yg + zg * zg);
+  const ecl = toRad(23.4393 - 3.563e-7 * d);
+  const xe = xg;
+  const ye = yg * Math.cos(ecl) - zg * Math.sin(ecl);
+  const ze = yg * Math.sin(ecl) + zg * Math.cos(ecl);
+  const ra = Math.atan2(ye, xe);
+  const dec = Math.atan2(ze, Math.sqrt(xe * xe + ye * ye));
+
+  const lw = toRad(-lon), phi = toRad(lat);
+  const H = siderealTime(toDays(nowMs), lw) - ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceAU };
+}
+function getVenusPosition(nowMs, lat, lon) {
+  const d = toDays(nowMs) + 1.5;
+  const wSun = 282.9404 + 4.70935e-5 * d;
+  const eSun = 0.016709 - 1.151e-9 * d;
+  const MSun = 356.0470 + 0.9856002585 * d;
+  const sunXYZ = helioXYZ(0, 0, wSun, 1, eSun, MSun);
+  const earth = { x: -sunXYZ.x, y: -sunXYZ.y, z: -sunXYZ.z };
+
+  const N = 76.6799 + 2.46590e-5 * d;
+  const i = 3.3946 + 2.75e-8 * d;
+  const w = 54.8910 + 1.38374e-5 * d;
+  const a = 0.723330;
+  const e = 0.006773 - 1.302e-9 * d;
+  const M = 48.0052 + 1.6021302244 * d;
+  const ven = helioXYZ(N, i, w, a, e, M);
+
+  const xg = ven.x - earth.x, yg = ven.y - earth.y, zg = ven.z - earth.z;
+  const distanceAU = Math.sqrt(xg * xg + yg * yg + zg * zg);
+  const ecl = toRad(23.4393 - 3.563e-7 * d);
+  const xe = xg;
+  const ye = yg * Math.cos(ecl) - zg * Math.sin(ecl);
+  const ze = yg * Math.sin(ecl) + zg * Math.cos(ecl);
+  const ra = Math.atan2(ye, xe);
+  const dec = Math.atan2(ze, Math.sqrt(xe * xe + ye * ye));
+
+  const lw = toRad(-lon), phi = toRad(lat);
+  const H = siderealTime(toDays(nowMs), lw) - ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceAU };
+}
+
+function getJupiterPosition(nowMs, lat, lon) {
+  const d = toDays(nowMs) + 1.5;
+  const wSun = 282.9404 + 4.70935e-5 * d;
+  const eSun = 0.016709 - 1.151e-9 * d;
+  const MSun = 356.0470 + 0.9856002585 * d;
+  const sunXYZ = helioXYZ(0, 0, wSun, 1, eSun, MSun);
+  const earth = { x: -sunXYZ.x, y: -sunXYZ.y, z: -sunXYZ.z };
+
+  const N = 100.4542 + 2.76854e-5 * d;
+  const i = 1.3030 - 1.557e-7 * d;
+  const w = 273.8777 + 1.64505e-5 * d;
+  const a = 5.20256;
+  const e = 0.048498 + 4.469e-9 * d;
+  const M = 19.8950 + 0.0830853001 * d;
+  const jup = helioXYZ(N, i, w, a, e, M);
+
+  const xg = jup.x - earth.x, yg = jup.y - earth.y, zg = jup.z - earth.z;
+  const distanceAU = Math.sqrt(xg * xg + yg * yg + zg * zg);
+  const ecl = toRad(23.4393 - 3.563e-7 * d);
+  const xe = xg;
+  const ye = yg * Math.cos(ecl) - zg * Math.sin(ecl);
+  const ze = yg * Math.sin(ecl) + zg * Math.cos(ecl);
+  const ra = Math.atan2(ye, xe);
+  const dec = Math.atan2(ze, Math.sqrt(xe * xe + ye * ye));
+
+  const lw = toRad(-lon), phi = toRad(lat);
+  const H = siderealTime(toDays(nowMs), lw) - ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceAU };
+}
+
+function getSaturnPosition(nowMs, lat, lon) {
+  const d = toDays(nowMs) + 1.5;
+  const wSun = 282.9404 + 4.70935e-5 * d;
+  const eSun = 0.016709 - 1.151e-9 * d;
+  const MSun = 356.0470 + 0.9856002585 * d;
+  const sunXYZ = helioXYZ(0, 0, wSun, 1, eSun, MSun);
+  const earth = { x: -sunXYZ.x, y: -sunXYZ.y, z: -sunXYZ.z };
+
+  const N = 113.6634 + 2.38980e-5 * d;
+  const i = 2.4886 - 1.081e-7 * d;
+  const w = 339.3939 + 2.97661e-5 * d;
+  const a = 9.55475;
+  const e = 0.055546 - 9.499e-9 * d;
+  const M = 316.9670 + 0.0334442282 * d;
+  const sat = helioXYZ(N, i, w, a, e, M);
+
+  const xg = sat.x - earth.x, yg = sat.y - earth.y, zg = sat.z - earth.z;
+  const distanceAU = Math.sqrt(xg * xg + yg * yg + zg * zg);
+  const ecl = toRad(23.4393 - 3.563e-7 * d);
+  const xe = xg;
+  const ye = yg * Math.cos(ecl) - zg * Math.sin(ecl);
+  const ze = yg * Math.sin(ecl) + zg * Math.cos(ecl);
+  const ra = Math.atan2(ye, xe);
+  const dec = Math.atan2(ze, Math.sqrt(xe * xe + ye * ye));
+
+  const lw = toRad(-lon), phi = toRad(lat);
+  const H = siderealTime(toDays(nowMs), lw) - ra;
+  const altitude = Math.asin(Math.sin(phi) * Math.sin(dec) + Math.cos(phi) * Math.cos(dec) * Math.cos(H));
+  const azSouthBased = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dec) * Math.cos(phi));
+  const azimuth = (toDeg(azSouthBased) + 180 + 360) % 360;
+  return { elevation: toDeg(altitude), azimuth, distanceAU };
+}
+
+const BODY_INFO = {
+  SUN: {
+    image: './images/sun.png',
+    tagline: 'G2V Yellow Dwarf Star',
+    facts: ['Diameter: 1,391,000 km (109× Earth)', 'Surface temp: ~5,500°C', 'Age: ~4.6 billion years', 'Powers Earth via nuclear fusion, 8 min 20s away by light']
+  },
+  MOON: {
+    image: './images/moon.png',
+    tagline: "Earth's Only Natural Satellite",
+    facts: ['Diameter: 3,474 km', 'Orbital period: 27.3 days', 'No atmosphere, extreme temp swings', 'Same face always faces Earth (tidal lock)']
+  },
+  MERCURY: {
+    image: './images/mercury.png',
+    tagline: 'Smallest, Fastest Planet',
+    facts: ['Diameter: 4,879 km', 'Orbital period: 88 days', 'No moons, no real atmosphere', 'Swings from 430°C to -180°C']
+  },
+  VENUS: {
+    image: './images/venus.png',
+    tagline: 'The Hottest Planet',
+    facts: ['Diameter: 12,104 km', 'Orbital period: 225 days', 'Thick CO2 atmosphere, runaway greenhouse', 'Surface ~465°C — hotter than Mercury']
+  },
+  MARS: {
+    image: './images/mars.png',
+    tagline: 'The Red Planet',
+    facts: ['Diameter: 6,779 km', 'Orbital period: 687 days', 'Two small moons: Phobos & Deimos', 'Red color from iron oxide (rust) dust']
+  },
+  JUPITER: {
+    image: './images/jupiter.png',
+    tagline: 'Largest Planet in the Solar System',
+    facts: ['Diameter: 139,820 km (11× Earth)', 'Orbital period: ~12 years', '95 known moons', 'Great Red Spot: a storm bigger than Earth']
+  },
+  SATURN: {
+    image: './images/saturn.png',
+    tagline: 'The Ringed Giant',
+    facts: ['Diameter: 116,460 km', 'Orbital period: ~29 years', 'Iconic rings of ice & rock', 'Least dense planet — would float in water']
+  },
+  POLARIS: {
+    image: './images/polaris.png',
+    tagline: 'The North Star',
+    facts: ['~433 light-years from Earth', 'A supergiant, ~2,500× brighter than our Sun', 'Sits almost exactly above Earth\u2019s north pole', 'Used for navigation for millennia']
+  }
+};
+
+const SYNODIC_MONTH = 29.530588861;
+const REF_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14, 0);
+function moonPhaseFraction(nowMs) {
+  const daysSince = (nowMs - REF_NEW_MOON) / DAY_MS;
+  return (((daysSince % SYNODIC_MONTH) + SYNODIC_MONTH) % SYNODIC_MONTH) / SYNODIC_MONTH;
+}
+function moonPhaseNameOf(phase) {
+  if (phase < 0.03 || phase > 0.97) return 'NEW MOON';
+  if (phase < 0.22) return 'WAXING CRESCENT';
+  if (phase < 0.28) return 'FIRST QUARTER';
+  if (phase < 0.47) return 'WAXING GIBBOUS';
+  if (phase < 0.53) return 'FULL MOON';
+  if (phase < 0.72) return 'WANING GIBBOUS';
+  if (phase < 0.78) return 'LAST QUARTER';
+  return 'WANING CRESCENT';
+}
+
+class Component extends DCLogic {
+  state = {
+    now: Date.now(),
+    settingsOpen: false,
+    lat: 40.8081,
+    lon: -82.9754,
+    tzOffset: -4,
+    locLabel: 'BUCYRUS, OH',
+    draftLat: '40.8081',
+    draftLon: '-82.9754',
+    draftTz: '-4',
+    draftLabel: 'BUCYRUS, OH',
+    geoStatus: '',
+    hoverBody: null,
+    hoverX: 0,
+    hoverY: 0,
+    detailBody: null,
+    detailDist: ''
+  };
+
+  setHover = (name, x, y, distText) => this.setState({ hoverBody: name, hoverX: x, hoverY: y, hoverDist: distText || '' });
+  clearHover = () => this.setState({ hoverBody: null });
+  openDetail = (name, distText) => this.setState({ detailBody: name, detailDist: distText || '' });
+  closeDetail = () => this.setState({ detailBody: null });
+  stopClickPropagation = (e) => e.stopPropagation();
+
+  componentDidMount() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('sunTrackerConfig') || 'null');
+      if (saved && typeof saved.lat === 'number') {
+        this.setState({
+          lat: saved.lat, lon: saved.lon, tzOffset: saved.tzOffset, locLabel: saved.locLabel
+        });
+      }
+    } catch (e) {}
+    this._timer = setInterval(() => this.setState({ now: Date.now() }), 15000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._timer);
+  }
+
+  openSettings = () => {
+    this.setState({
+      settingsOpen: true,
+      draftLat: String(this.state.lat),
+      draftLon: String(this.state.lon),
+      draftTz: String(this.state.tzOffset),
+      draftLabel: this.state.locLabel,
+      geoStatus: ''
+    });
+  };
+
+  closeSettings = () => this.setState({ settingsOpen: false });
+
+  onLatChange = (e) => this.setState({ draftLat: e.target.value });
+  onLonChange = (e) => this.setState({ draftLon: e.target.value });
+  onTzChange = (e) => this.setState({ draftTz: e.target.value });
+  onLabelChange = (e) => this.setState({ draftLabel: e.target.value });
+
+  useMyLocation = () => {
+    if (!navigator.geolocation) {
+      this.setState({ geoStatus: 'Geolocation unavailable' });
+      return;
+    }
+    this.setState({ geoStatus: 'Locating…' });
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const tz = -(new Date().getTimezoneOffset()) / 60;
+        this.setState({
+          draftLat: pos.coords.latitude.toFixed(4),
+          draftLon: pos.coords.longitude.toFixed(4),
+          draftTz: String(tz),
+          geoStatus: 'Location acquired'
+        });
+      },
+      () => this.setState({ geoStatus: 'Permission denied' })
+    );
+  };
+
+  saveSettings = () => {
+    const lat = parseFloat(this.state.draftLat);
+    const lon = parseFloat(this.state.draftLon);
+    const tzOffset = parseFloat(this.state.draftTz);
+    if (Number.isNaN(lat) || Number.isNaN(lon) || Number.isNaN(tzOffset)) return;
+    const locLabel = (this.state.draftLabel || '').toUpperCase() || 'UNTITLED LOCATION';
+    this.setState({ lat, lon, tzOffset, locLabel, settingsOpen: false });
+    try {
+      localStorage.setItem('sunTrackerConfig', JSON.stringify({ lat, lon, tzOffset, locLabel }));
+    } catch (e) {}
+  };
+
+  // pseudo-local date: shift real UTC time by tzOffset so getUTC* reads as "local"
+  localDate(nowMs, tzOffset) {
+    return new Date(nowMs + tzOffset * 3600000);
+  }
+
+  sunPosition(lat, lon, tzOffset, nowMs) {
+    const d = this.localDate(nowMs, tzOffset);
+    const start = Date.UTC(d.getUTCFullYear(), 0, 0);
+    const diff = d.getTime() - start;
+    const dayOfYear = Math.floor(diff / 86400000);
+    const hourFrac = d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600;
+    const gamma = (2 * Math.PI / 365) * (dayOfYear - 1 + (hourFrac - 12) / 24);
+
+    const eqTime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma)
+      - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma));
+    const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+      - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma)
+      - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma);
+
+    const timeOffset = eqTime + 4 * lon - 60 * tzOffset;
+    const trueSolarTime = (d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60 + timeOffset + 1440) % 1440;
+    const hourAngleDeg = trueSolarTime / 4 - 180;
+    const ha = toRad(hourAngleDeg);
+    const latR = toRad(lat);
+
+    const cosZenith = clamp(Math.sin(latR) * Math.sin(decl) + Math.cos(latR) * Math.cos(decl) * Math.cos(ha), -1, 1);
+    const zenith = Math.acos(cosZenith);
+    const elevation = 90 - toDeg(zenith);
+
+    let azimuth;
+    if (Math.sin(zenith) < 1e-6) {
+      azimuth = 0;
+    } else {
+      let cosAz = clamp((Math.sin(decl) - Math.sin(latR) * Math.cos(zenith)) / (Math.cos(latR) * Math.sin(zenith)), -1, 1);
+      azimuth = toDeg(Math.acos(cosAz));
+      if (ha > 0) azimuth = 360 - azimuth;
+    }
+
+    let ha0deg = null;
+    const tanProduct = -Math.tan(latR) * Math.tan(decl);
+    if (tanProduct >= -1 && tanProduct <= 1) {
+      ha0deg = toDeg(Math.acos(tanProduct));
+    }
+    let sunriseLocalMin = null, sunsetLocalMin = null;
+    if (ha0deg !== null) {
+      sunriseLocalMin = (720 - 4 * ha0deg) - timeOffset;
+      sunsetLocalMin = (720 + 4 * ha0deg) - timeOffset;
+      sunriseLocalMin = ((sunriseLocalMin % 1440) + 1440) % 1440;
+      sunsetLocalMin = ((sunsetLocalMin % 1440) + 1440) % 1440;
+    }
+
+    // Earth-Sun distance in AU (Kepler ellipse: r = a(1-e cos E))
+    const gammaSolar = toRad(((357.5291 + 0.98560028 * (toDays(nowMs))) % 360 + 360) % 360);
+    const distanceAU = 1.00014 - 0.01671 * Math.cos(gammaSolar) - 0.00014 * Math.cos(2 * gammaSolar);
+    return { elevation, azimuth, decl, eqTime, hourFrac, sunriseLocalMin, sunsetLocalMin, localDate: d, distanceAU };
+  }
+
+  polar(azimuthDeg, r) {
+    const rad = toRad(azimuthDeg);
+    return { x: CX + r * Math.sin(rad), y: CY - r * Math.cos(rad) };
+  }
+
+  elevationRadius(elevation) {
+    const e = clamp(elevation, 0, 90);
+    return 116 + 76 * (e / 90);
+  }
+
+  fmtMinutes(mins) {
+    if (mins === null || Number.isNaN(mins)) return '--:--';
+    const h = Math.floor(mins / 60) % 24;
+    const m = Math.floor(mins % 60);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const h12 = ((h + 11) % 12) + 1;
+    return `${h12}:${String(m).padStart(2, '0')} ${period}`;
+  }
+
+  renderVals() {
+    const { now, lat, lon, tzOffset, locLabel, settingsOpen, draftLat, draftLon, draftTz, draftLabel, geoStatus, hoverBody, hoverX, hoverY } = this.state;
+    const sun = this.sunPosition(lat, lon, tzOffset, now);
+
+    const isDay = sun.elevation >= 0;
+    const r = isDay ? this.elevationRadius(sun.elevation) : 108;
+    const pos = this.polar(sun.azimuth, r);
+    const sunScale = distScale(sun.distanceAU);
+
+    // clock text from localDate
+    const ld = sun.localDate;
+    let h = ld.getUTCHours(), m = ld.getUTCMinutes(), s = ld.getUTCSeconds();
+    const period = h >= 12 ? 'PM' : 'AM';
+    const h12 = ((h + 11) % 12) + 1;
+    const clockText = `${h12}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')} ${period}`;
+
+    // ticks
+    const minorTicks = [];
+    const majorTicks = [];
+    for (let deg = 0; deg < 360; deg += 10) {
+      const isMajor = deg % 45 === 0;
+      const outer = this.polar(deg, RING_OUT);
+      const inner = this.polar(deg, isMajor ? RING_OUT - 14 : RING_OUT - 7);
+      const entry = { x1: outer.x, y1: outer.y, x2: inner.x, y2: inner.y };
+      if (isMajor) majorTicks.push(entry); else minorTicks.push(entry);
+    }
+
+    // day path: sample every 12 min, only where elevation >= 0
+    const pts = [];
+    const moonPts = [];
+    const marsPts = [];
+    const saturnPts = [];
+    const jupiterPts = [];
+    const mercuryPts = [];
+    const venusPts = [];
+    let moonriseMin = null, moonsetMin = null;
+    let prevMoonEl = null;
+    let marsriseMin = null, marssetMin = null;
+    let prevMarsEl = null;
+    let saturnriseMin = null, saturnsetMin = null;
+    let prevSaturnEl = null;
+    let jupiterriseMin = null, jupitersetMin = null;
+    let prevJupiterEl = null;
+    let mercuryriseMin = null, mercurysetMin = null;
+    let prevMercuryEl = null;
+    let venusriseMin = null, venussetMin = null;
+    let prevVenusEl = null;
+    for (let mins = 0; mins <= 1440; mins += 12) {
+      const sampleMs = now - (now % 86400000) + mins * 60000 - tzOffset * 3600000;
+      const s2 = this.sunPosition(lat, lon, tzOffset, sampleMs);
+      if (s2.elevation >= 0) {
+        const rr = this.elevationRadius(s2.elevation);
+        const p = this.polar(s2.azimuth, rr);
+        pts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const mrp = getMarsPosition(sampleMs, lat, lon);
+      if (mrp.elevation >= 0) {
+        const rr = this.elevationRadius(mrp.elevation);
+        const p = this.polar(mrp.azimuth, rr);
+        marsPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const mer = getMercuryPosition(sampleMs, lat, lon);
+      if (mer.elevation >= 0) {
+        const rr = this.elevationRadius(mer.elevation);
+        const p = this.polar(mer.azimuth, rr);
+        mercuryPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const ven = getVenusPosition(sampleMs, lat, lon);
+      if (ven.elevation >= 0) {
+        const rr = this.elevationRadius(ven.elevation);
+        const p = this.polar(ven.azimuth, rr);
+        venusPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const jup = getJupiterPosition(sampleMs, lat, lon);
+      if (jup.elevation >= 0) {
+        const rr = this.elevationRadius(jup.elevation);
+        const p = this.polar(jup.azimuth, rr);
+        jupiterPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const stp = getSaturnPosition(sampleMs, lat, lon);
+      if (stp.elevation >= 0) {
+        const rr = this.elevationRadius(stp.elevation);
+        const p = this.polar(stp.azimuth, rr);
+        saturnPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      const mp = getMoonPosition(sampleMs, lat, lon);
+      if (mp.elevation >= 0) {
+        const rr = this.elevationRadius(mp.elevation);
+        const p = this.polar(mp.azimuth, rr);
+        moonPts.push(`${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+      }
+      if (prevMoonEl !== null) {
+        if (prevMoonEl < 0 && mp.elevation >= 0 && moonriseMin === null) moonriseMin = mins;
+        if (prevMoonEl >= 0 && mp.elevation < 0 && moonsetMin === null) moonsetMin = mins;
+      }
+      prevMoonEl = mp.elevation;
+      if (prevMarsEl !== null) {
+        if (prevMarsEl < 0 && mrp.elevation >= 0 && marsriseMin === null) marsriseMin = mins;
+        if (prevMarsEl >= 0 && mrp.elevation < 0 && marssetMin === null) marssetMin = mins;
+      }
+      prevMarsEl = mrp.elevation;
+      if (prevSaturnEl !== null) {
+        if (prevSaturnEl < 0 && stp.elevation >= 0 && saturnriseMin === null) saturnriseMin = mins;
+        if (prevSaturnEl >= 0 && stp.elevation < 0 && saturnsetMin === null) saturnsetMin = mins;
+      }
+      prevSaturnEl = stp.elevation;
+      if (prevJupiterEl !== null) {
+        if (prevJupiterEl < 0 && jup.elevation >= 0 && jupiterriseMin === null) jupiterriseMin = mins;
+        if (prevJupiterEl >= 0 && jup.elevation < 0 && jupitersetMin === null) jupitersetMin = mins;
+      }
+      prevJupiterEl = jup.elevation;
+      if (prevMercuryEl !== null) {
+        if (prevMercuryEl < 0 && mer.elevation >= 0 && mercuryriseMin === null) mercuryriseMin = mins;
+        if (prevMercuryEl >= 0 && mer.elevation < 0 && mercurysetMin === null) mercurysetMin = mins;
+      }
+      prevMercuryEl = mer.elevation;
+      if (prevVenusEl !== null) {
+        if (prevVenusEl < 0 && ven.elevation >= 0 && venusriseMin === null) venusriseMin = mins;
+        if (prevVenusEl >= 0 && ven.elevation < 0 && venussetMin === null) venussetMin = mins;
+      }
+      prevVenusEl = ven.elevation;
+    }
+
+    // Polaris: fixed at true north, elevation ≈ observer's latitude (only visible N. hemisphere)
+    const polarisVisible = lat > 0.5;
+    const polarisElevation = clamp(lat, 0, 90);
+    const polarisR = this.elevationRadius(polarisElevation);
+    const polarisPos = this.polar(0, polarisR);
+    const polarisScale = distScale(27400000); // ~433 ly in AU — always the tiniest/farthest
+
+    const mars = getMarsPosition(now, lat, lon);
+    const isMarsUp = mars.elevation >= 0;
+    const marsR = isMarsUp ? this.elevationRadius(mars.elevation) : 108;
+    const marsPos = this.polar(mars.azimuth, marsR);
+    const marsScale = distScale(mars.distanceAU);
+
+    const saturn = getSaturnPosition(now, lat, lon);
+    const isSaturnUp = saturn.elevation >= 0;
+    const saturnR = isSaturnUp ? this.elevationRadius(saturn.elevation) : 108;
+    const saturnPos = this.polar(saturn.azimuth, saturnR);
+    const saturnScale = distScale(saturn.distanceAU);
+
+    const jupiter = getJupiterPosition(now, lat, lon);
+    const isJupiterUp = jupiter.elevation >= 0;
+    const jupiterR = isJupiterUp ? this.elevationRadius(jupiter.elevation) : 108;
+    const jupiterPos = this.polar(jupiter.azimuth, jupiterR);
+    const jupiterScale = distScale(jupiter.distanceAU);
+
+    const mercury = getMercuryPosition(now, lat, lon);
+    const isMercuryUp = mercury.elevation >= 0;
+    const mercuryR = isMercuryUp ? this.elevationRadius(mercury.elevation) : 108;
+    const mercuryPos = this.polar(mercury.azimuth, mercuryR);
+    const mercuryScale = distScale(mercury.distanceAU);
+
+    const venus = getVenusPosition(now, lat, lon);
+    const isVenusUp = venus.elevation >= 0;
+    const venusR = isVenusUp ? this.elevationRadius(venus.elevation) : 108;
+    const venusPos = this.polar(venus.azimuth, venusR);
+    const venusScale = distScale(venus.distanceAU);
+
+    const moon = getMoonPosition(now, lat, lon);
+    const isMoonUp = moon.elevation >= 0;
+    const moonR = isMoonUp ? this.elevationRadius(moon.elevation) : 108;
+    const moonPos = this.polar(moon.azimuth, moonR);
+    const phase = moonPhaseFraction(now);
+    const illumination = (1 - Math.cos(2 * Math.PI * phase)) / 2;
+    const waxing = phase < 0.5;
+    const shadowOffset = 7 * (1 - 2 * illumination) * (waxing ? 1 : -1);
+    const moonScale = distScale(moon.distanceKm / 149597870);
+
+    return {
+      minorTicks, majorTicks,
+      hasDayPath: pts.length > 1,
+      dayPathPoints: pts.join(' '),
+      sunPointerX: pos.x, sunPointerY: pos.y,
+      sunMarkerColor: isDay ? '#ffe27a' : '#6b5a30',
+      sunHaloR: (12 * sunScale).toFixed(1),
+      sunDotR: (7 * sunScale).toFixed(1),
+      sunLabelLeft: (pos.x / 480 * 100 + 3.5).toFixed(2),
+      sunLabelTop: (pos.y / 480 * 100 - 3).toFixed(2),
+      moonLabelLeft: (moonPos.x / 480 * 100 + 3.5).toFixed(2),
+      moonLabelTop: (moonPos.y / 480 * 100 - 3).toFixed(2),
+      sunLineColor: isDay ? 'rgba(244,201,93,0.55)' : 'rgba(107,90,48,0.4)',
+      sunLineDash: isDay ? '0' : '2 4',
+      sunMarkerStyle: isDay ? 'animation: sunPulse 3s ease-in-out infinite;' : '',
+      clockText,
+      azText: sun.azimuth.toFixed(1),
+      elText: sun.elevation.toFixed(1),
+      dayStatusText: isDay ? 'ABOVE HORIZON' : 'BELOW HORIZON',
+      sunriseText: this.fmtMinutes(sun.sunriseLocalMin),
+      sunsetText: this.fmtMinutes(sun.sunsetLocalMin),
+      locLabelText: locLabel,
+      hasMoonPath: moonPts.length > 1,
+      moonPathPoints: moonPts.join(' '),
+      moonPointerX: moonPos.x, moonPointerY: moonPos.y,
+      moonShadowCx: moonPos.x + shadowOffset,
+      moonMarkerOpacity: isMoonUp ? 0.95 : 0.35,
+      moonDotR: (7 * moonScale).toFixed(1),
+      moonShadowOpacity: isMoonUp ? 0.85 : 0.9,
+      moonLineColor: isMoonUp ? 'rgba(201,214,227,0.5)' : 'rgba(201,214,227,0.22)',
+      moonLineDash: isMoonUp ? '0' : '2 4',
+      moonPhaseName: moonPhaseNameOf(phase),
+      moonIllumText: Math.round(illumination * 100),
+      moonriseText: this.fmtMinutes(moonriseMin),
+      moonsetText: this.fmtMinutes(moonsetMin),
+      polarisVisible,
+      polarisX: polarisPos.x, polarisY: polarisPos.y,
+      polarisLabelLeft: (polarisPos.x / 480 * 100 + 8.5).toFixed(2),
+      polarisLabelTop: (polarisPos.y / 480 * 100 + 3.5).toFixed(2),
+      polarisScale: polarisScale.toFixed(2),
+      hasMarsPath: marsPts.length > 1,
+      marsPathPoints: marsPts.join(' '),
+      marsPointerX: marsPos.x, marsPointerY: marsPos.y,
+      marsMarkerOpacity: isMarsUp ? 0.95 : 0.35,
+      marsHaloR: (6 * marsScale).toFixed(1),
+      marsDotR: (3.5 * marsScale).toFixed(1),
+      marsLineColor: isMarsUp ? 'rgba(224,122,63,0.55)' : 'rgba(224,122,63,0.22)',
+      marsLineDash: isMarsUp ? '0' : '2 4',
+      marsriseText: this.fmtMinutes(marsriseMin),
+      marssetText: this.fmtMinutes(marssetMin),
+      hasSaturnPath: saturnPts.length > 1,
+      saturnPathPoints: saturnPts.join(' '),
+      saturnPointerX: saturnPos.x, saturnPointerY: saturnPos.y,
+      saturnMarkerOpacity: isSaturnUp ? 0.95 : 0.35,
+      saturnLineColor: isSaturnUp ? 'rgba(224,201,140,0.5)' : 'rgba(224,201,140,0.2)',
+      saturnLineDash: isSaturnUp ? '0' : '2 4',
+      saturnHaloR: (6 * saturnScale).toFixed(1),
+      saturnRingRx: (6 * saturnScale).toFixed(1),
+      saturnRingRy: (1.8 * saturnScale).toFixed(1),
+      saturnDotR: (3 * saturnScale).toFixed(1),
+      saturnriseText: this.fmtMinutes(saturnriseMin),
+      saturnsetText: this.fmtMinutes(saturnsetMin),
+      hasJupiterPath: jupiterPts.length > 1,
+      jupiterPathPoints: jupiterPts.join(' '),
+      jupiterPointerX: jupiterPos.x, jupiterPointerY: jupiterPos.y,
+      jupiterMarkerOpacity: isJupiterUp ? 0.95 : 0.35,
+      jupiterLineColor: isJupiterUp ? 'rgba(201,155,110,0.55)' : 'rgba(201,155,110,0.22)',
+      jupiterLineDash: isJupiterUp ? '0' : '2 4',
+      jupiterHaloR: (7 * jupiterScale).toFixed(1),
+      jupiterDotR: (4.5 * jupiterScale).toFixed(1),
+      jupiterBandHalfW: (4.5 * jupiterScale).toFixed(1),
+      jupiterriseText: this.fmtMinutes(jupiterriseMin),
+      jupitersetText: this.fmtMinutes(jupitersetMin),
+      jupiterBandX1: jupiterPos.x - 4.5 * jupiterScale,
+      jupiterBandX2: jupiterPos.x + 4.5 * jupiterScale,
+      hasMercuryPath: mercuryPts.length > 1,
+      mercuryPathPoints: mercuryPts.join(' '),
+      mercuryPointerX: mercuryPos.x, mercuryPointerY: mercuryPos.y,
+      mercuryMarkerOpacity: isMercuryUp ? 0.95 : 0.35,
+      mercuryLineColor: isMercuryUp ? 'rgba(154,154,148,0.5)' : 'rgba(154,154,148,0.2)',
+      mercuryLineDash: isMercuryUp ? '0' : '2 4',
+      mercuryHaloR: (5 * mercuryScale).toFixed(1),
+      mercuryDotR: (2.5 * mercuryScale).toFixed(1),
+      mercuryriseText: this.fmtMinutes(mercuryriseMin),
+      mercurysetText: this.fmtMinutes(mercurysetMin),
+      hasVenusPath: venusPts.length > 1,
+      venusPathPoints: venusPts.join(' '),
+      venusPointerX: venusPos.x, venusPointerY: venusPos.y,
+      venusMarkerOpacity: isVenusUp ? 0.95 : 0.35,
+      venusLineColor: isVenusUp ? 'rgba(245,237,220,0.55)' : 'rgba(245,237,220,0.22)',
+      venusLineDash: isVenusUp ? '0' : '2 4',
+      venusHaloR: (8 * venusScale).toFixed(1),
+      venusDotR: (4 * venusScale).toFixed(1),
+      venusriseText: this.fmtMinutes(venusriseMin),
+      venussetText: this.fmtMinutes(venussetMin),
+      hoverBody,
+      hoverLabelLeft: (hoverX / 480 * 100).toFixed(2),
+      hoverLabelTop: ((hoverY / 480 * 100) - 5).toFixed(2),
+      hoverDistText: this.state.hoverDist || '',
+      onHoverSun: () => this.setHover('SUN', pos.x, pos.y, `${sun.distanceAU.toFixed(3)} AU  \u00b7  ${(sun.distanceAU * 92.96).toFixed(1)}M mi`),
+      onHoverMoon: () => this.setHover('MOON', moonPos.x, moonPos.y, `${Math.round(moon.distanceKm).toLocaleString()} km  \u00b7  ${Math.round(moon.distanceKm * 0.621).toLocaleString()} mi`),
+      onHoverMercury: () => this.setHover('MERCURY', mercuryPos.x, mercuryPos.y, `${mercury.distanceAU.toFixed(3)} AU`),
+      onHoverVenus: () => this.setHover('VENUS', venusPos.x, venusPos.y, `${venus.distanceAU.toFixed(3)} AU`),
+      onHoverMars: () => this.setHover('MARS', marsPos.x, marsPos.y, `${mars.distanceAU.toFixed(3)} AU`),
+      onHoverJupiter: () => this.setHover('JUPITER', jupiterPos.x, jupiterPos.y, `${jupiter.distanceAU.toFixed(3)} AU`),
+      onHoverSaturn: () => this.setHover('SATURN', saturnPos.x, saturnPos.y, `${saturn.distanceAU.toFixed(3)} AU`),
+      onHoverPolaris: () => this.setHover('POLARIS', polarisPos.x, polarisPos.y, '\u2248 433 light-years'),
+      onHoverEnd: this.clearHover,
+      onClickSun: () => this.openDetail('SUN', `${sun.distanceAU.toFixed(3)} AU  \u00b7  ${(sun.distanceAU * 92.96).toFixed(1)}M mi away`),
+      onClickMoon: () => this.openDetail('MOON', `${Math.round(moon.distanceKm).toLocaleString()} km  \u00b7  ${Math.round(moon.distanceKm * 0.621).toLocaleString()} mi away`),
+      onClickMercury: () => this.openDetail('MERCURY', `${mercury.distanceAU.toFixed(3)} AU away`),
+      onClickVenus: () => this.openDetail('VENUS', `${venus.distanceAU.toFixed(3)} AU away`),
+      onClickMars: () => this.openDetail('MARS', `${mars.distanceAU.toFixed(3)} AU away`),
+      onClickJupiter: () => this.openDetail('JUPITER', `${jupiter.distanceAU.toFixed(3)} AU away`),
+      onClickSaturn: () => this.openDetail('SATURN', `${saturn.distanceAU.toFixed(3)} AU away`),
+      onClickPolaris: () => this.openDetail('POLARIS', '\u2248 433 light-years away'),
+      detailBody: this.state.detailBody,
+      detailInfo: this.state.detailBody ? BODY_INFO[this.state.detailBody] : null,
+      detailDist: this.state.detailDist,
+      closeDetail: this.closeDetail,
+      stopClickPropagation: this.stopClickPropagation,
+      settingsOpen,
+      draftLat, draftLon, draftTz, draftLabel, geoStatus,
+      openSettings: this.openSettings,
+      closeSettings: this.closeSettings,
+      saveSettings: this.saveSettings,
+      useMyLocation: this.useMyLocation,
+      onLatChange: this.onLatChange,
+      onLonChange: this.onLonChange,
+      onTzChange: this.onTzChange,
+      onLabelChange: this.onLabelChange
+    };
+  }
+}
+
+</script>
+</body>
+</html>
